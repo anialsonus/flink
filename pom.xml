@@ -174,6 +174,7 @@ under the License.
 		<japicmp.outputDir>tools/japicmp-output</japicmp.outputDir>
 		<spotless.version>2.27.1</spotless.version>
 		<spotless.scalafmt.version>3.4.3</spotless.scalafmt.version>
+		<cyclonedx.maven.plugin.version>2.7.9</cyclonedx.maven.plugin.version>
 		<spotless.delimiter>package</spotless.delimiter>
 		<spotless.license.header>
 /*
@@ -1122,13 +1123,6 @@ under the License.
 								<skip>true</skip>
 							</configuration>
 						</plugin>
-						<plugin>
-							<groupId>org.cyclonedx</groupId>
-							<artifactId>cyclonedx-maven-plugin</artifactId>
-							<configuration>
-								<skip>true</skip>
-							</configuration>
-						</plugin>
 					</plugins>
 				</pluginManagement>
 			</build>
@@ -1352,6 +1346,45 @@ under the License.
 				</pluginManagement>
 			</build>
 		</profile>
+        <profile>
+             <id>cyclonedx</id>
+             <activation>
+               <activeByDefault>false</activeByDefault>
+             </activation>
+             <build>
+               <plugins>
+                 <plugin>
+                   <groupId>org.cyclonedx</groupId>
+                   <artifactId>cyclonedx-maven-plugin</artifactId>
+                   <version>${cyclonedx.maven.plugin.version}</version>
+                   <inherited>false</inherited>
+                     <executions>
+                       <execution>
+                           <id>cyclonedx-aggregate</id>
+                           <phase>package</phase>
+                           <goals>
+                               <goal>makeAggregateBom</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+                   <configuration>
+                     <projectType>library</projectType>
+                     <schemaVersion>1.4</schemaVersion>
+                     <includeBomSerialNumber>true</includeBomSerialNumber>
+                     <includeCompileScope>true</includeCompileScope>
+                     <includeProvidedScope>true</includeProvidedScope>
+                     <includeRuntimeScope>true</includeRuntimeScope>
+                     <includeSystemScope>true</includeSystemScope>
+                     <includeTestScope>false</includeTestScope>
+                     <includeLicenseText>false</includeLicenseText>
+                     <outputReactorProjects>false</outputReactorProjects>
+                     <outputFormat>all</outputFormat>
+                     <outputName>CycloneDX-Sbom-${project.artifactId}-${project.version}</outputName>
+                   </configuration>
+                 </plugin>
+               </plugins>
+             </build>
+           </profile>
 	</profiles>
 
 	<build>
@@ -1942,19 +1975,6 @@ under the License.
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>org.cyclonedx</groupId>
-				<artifactId>cyclonedx-maven-plugin</artifactId>
-				<version>2.7.7</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>makeBom</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 
 		<pluginManagement>
