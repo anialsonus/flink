@@ -53,6 +53,8 @@ import org.apache.hive.service.rpc.thrift.TCloseOperationReq;
 import org.apache.hive.service.rpc.thrift.TCloseOperationResp;
 import org.apache.hive.service.rpc.thrift.TCloseSessionReq;
 import org.apache.hive.service.rpc.thrift.TCloseSessionResp;
+import org.apache.hive.service.rpc.thrift.TDownloadDataReq;
+import org.apache.hive.service.rpc.thrift.TDownloadDataResp;
 import org.apache.hive.service.rpc.thrift.TExecuteStatementReq;
 import org.apache.hive.service.rpc.thrift.TExecuteStatementResp;
 import org.apache.hive.service.rpc.thrift.TFetchResultsReq;
@@ -97,6 +99,8 @@ import org.apache.hive.service.rpc.thrift.TSetClientInfoReq;
 import org.apache.hive.service.rpc.thrift.TSetClientInfoResp;
 import org.apache.hive.service.rpc.thrift.TStatus;
 import org.apache.hive.service.rpc.thrift.TStatusCode;
+import org.apache.hive.service.rpc.thrift.TUploadDataReq;
+import org.apache.hive.service.rpc.thrift.TUploadDataResp;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessorFactory;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -116,7 +120,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static org.apache.flink.configuration.ExecutionOptions.RUNTIME_MODE;
 import static org.apache.flink.table.api.config.TableConfigOptions.TABLE_DML_SYNC;
@@ -795,6 +798,16 @@ public class HiveServer2Endpoint implements TCLIService.Iface, SqlGatewayEndpoin
     public TSetClientInfoResp SetClientInfo(TSetClientInfoReq tSetClientInfoReq) throws TException {
         return new TSetClientInfoResp(buildErrorStatus("SetClientInfo"));
     }
+
+    @Override
+    public TUploadDataResp UploadData(TUploadDataReq tUploadDataReq) throws TException {
+        return null;
+    }
+
+    @Override
+    public TDownloadDataResp DownloadData(TDownloadDataReq tDownloadDataReq) throws TException {
+        return null;
+    }
     // CHECKSTYLE.ON: MethodName
 
     @Override
@@ -869,10 +882,6 @@ public class HiveServer2Endpoint implements TCLIService.Iface, SqlGatewayEndpoin
                                     .inputProtocolFactory(
                                             new TBinaryProtocol.Factory(
                                                     true, true, maxMessageSize, maxMessageSize))
-                                    .requestTimeout(requestTimeoutMs)
-                                    .requestTimeoutUnit(TimeUnit.MILLISECONDS)
-                                    .beBackoffSlotLength(backOffSlotLengthMs)
-                                    .beBackoffSlotLengthUnit(TimeUnit.MILLISECONDS)
                                     .executorService(executor));
         } catch (Exception e) {
             throw new SqlGatewayException("Failed to build the server.", e);

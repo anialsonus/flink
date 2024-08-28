@@ -107,7 +107,7 @@ under the License.
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<flink.hadoop.version>2.10.2</flink.hadoop.version>
+		<flink.hadoop.version>3.3.6</flink.hadoop.version>
 		<flink.XmxMax>3072m</flink.XmxMax>
 		<!-- XmxMax / forkCountITCase -->
 		<flink.XmxITCase>1536m</flink.XmxITCase>
@@ -140,7 +140,7 @@ under the License.
 		<scala.binary.version>2.12</scala.binary.version>
 		<chill.version>0.7.6</chill.version>
 		<!-- keep FlinkTestcontainersConfigurator.configureZookeeperContainer in sync -->
-		<zookeeper.version>3.7.1</zookeeper.version>
+		<zookeeper.version>3.8.1</zookeeper.version>
 		<!-- Project `flink-benchmarks` uses zk testing server in `curator-test` for performance
 		benchmark, please confirm it will not affect the benchmarks when the version is bumped. -->
 		<curator.version>5.4.0</curator.version>
@@ -171,8 +171,8 @@ under the License.
 			Starting Hadoop 3, org.apache.kerby will be used instead of MiniKDC. We may have
 			to revisit the impact at that time.
 		-->
-		<minikdc.version>3.2.4</minikdc.version>
-		<hive.version>2.3.9</hive.version>
+		<minikdc.version>3.3.6</minikdc.version>
+		<hive.version>4.0.0</hive.version>
 		<orc.version>1.5.6</orc.version>
 		<japicmp.referenceVersion>1.19.0</japicmp.referenceVersion>
 		<japicmp.outputDir>tools/japicmp-output</japicmp.outputDir>
@@ -1882,7 +1882,7 @@ under the License.
 						<configuration>
 							<rules>
 								<requireMavenVersion>
-									<version>[3.8.6]</version>
+									<version>[3.8.6,]</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
 									<version>${target.java.version}</version>
