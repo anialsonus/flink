@@ -38,6 +38,8 @@ import org.apache.hadoop.security.token.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
 import java.time.Clock;
@@ -160,7 +162,7 @@ public class HiveServer2DelegationTokenProvider implements DelegationTokenProvid
                                 credentials.addToken(hive2Token.getKind(), hive2Token);
 
                                 HiveServer2DelegationTokenIdentifier tokenIdentifier =
-                                        hive2Token.decodeIdentifier();
+                                        extractTokenIdentifier(hive2Token);
 
                                 if (tokenRenewalInterval == null) {
                                     tokenRenewalInterval =
@@ -230,5 +232,19 @@ public class HiveServer2DelegationTokenProvider implements DelegationTokenProvid
         } catch (Exception e) {
             throw new FlinkRuntimeException(e);
         }
+    }
+
+    private HiveServer2DelegationTokenIdentifier extractTokenIdentifier(
+            Token<HiveServer2DelegationTokenIdentifier> token) throws IOException {
+
+        HiveServer2DelegationTokenIdentifier tokenIdentifier =
+                new HiveServer2DelegationTokenIdentifier();
+
+        try (DataInputStream in =
+                new DataInputStream(new ByteArrayInputStream(token.getIdentifier()))) {
+            tokenIdentifier.readFields(in);
+        }
+
+        return tokenIdentifier;
     }
 }
