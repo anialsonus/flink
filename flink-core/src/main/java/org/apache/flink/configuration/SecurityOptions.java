@@ -215,6 +215,14 @@ public class SecurityOptions {
                                     + "possible to disable that behavior if it somehow conflicts "
                                     + "with the application being run.");
 
+    @Documentation.Section(value = Documentation.Sections.SECURITY_DELEGATION_TOKEN, position = 5)
+    public static final ConfigOption<String> DELEGATION_TOKENS_HIVE_RENEWER =
+            key("security.delegation.tokens.hive.renewer")
+                    .stringType()
+                    .noDefaultValue()
+                    .withDescription("Specifies the principal under which the delegation tokens "
+                            + "for Hive will be renewed.");
+
     /**
      * Returns a view over the given configuration via which options can be set/retrieved for the
      * given provider.
