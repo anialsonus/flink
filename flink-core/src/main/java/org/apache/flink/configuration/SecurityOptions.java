@@ -220,8 +220,9 @@ public class SecurityOptions {
             key("security.delegation.tokens.hive.renewer")
                     .stringType()
                     .noDefaultValue()
-                    .withDescription("Specifies the principal under which the delegation tokens "
-                            + "for Hive will be renewed.");
+                    .withDescription(
+                            "Specifies the principal under which the delegation tokens "
+                                    + "for Hive will be renewed.");
 
     /**
      * Returns a view over the given configuration via which options can be set/retrieved for the
